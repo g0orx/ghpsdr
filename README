@@ -1,0 +1,56 @@
+ghpsdr - Gtk+ Application for running HPSDR on Linux
+
+ghpsdr is a an application written specifically for HPSDR. It uses a version of WDSP that is ported from the Windows version. WDSP is built as a shared library. and can be downloaded from my svn (N6LYT/wdsp).
+
+The following has been verified with a clean install of Ubuntu.
+
+Building ghpsdr
+---------------
+
+You will need to install gtk+, fftw and libusb1.0
+
+    sudo apt-get install libgtk2.0-dev
+    sudo apt-get install libfftw3-dev
+    sudo apt-get install libusb-1.0-0-dev
+
+Get a copy of wdsp from the svn store and build and install it (see README.txt file in wdsp).
+
+From the ghpsdr install directry run the command
+
+    make
+
+If all is OK you will end up with the ghpsdr binary.
+
+
+Running ghpsdr with Ozy or Magister
+-----------------------------------
+
+To be able to run as a non root user you will need to add a udev script to set the permissions on the USB Ozy device.
+
+In /etc/udev/rules.d create a file called 90-ozy.rules with the following line in it:
+
+SUBSYSTEMS=="usb",ATTRS{idVendor}=="fffe",ATTRS{idProduct}=="0007",SYMLINK+="ozy",MODE="666"
+
+When Ozy is powered on and plugged in udev will recognise it and create /dev/ozy with permissions to allow you to access it as a non root user.
+
+You will also need to download initozy and the related files to load Ozy and the FPGA code.
+
+
+
+From the ghpsdr install directory run the command:
+
+./ghpsdr --usb
+
+
+Note: this is currently not tested. The default now is to use the ehternet interface/
+
+
+Running ghpsdr with Metis
+-------------------------
+
+
+From the ghpsdr install directory run the command:
+
+./ghpsdr
+
+The first thing that ghpsdr does is to run a discovery of devices on the network interfaces. If it finds more than one a dialog box is displayed to let you select the device to run with.
